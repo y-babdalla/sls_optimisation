@@ -9,6 +9,8 @@ This project demonstrates a fully automated pipeline for formulation design and 
 - **Optimisation Algorithms**: All optimisers are available in the `recommenders/proportion` directory.
 - **Tuning Scripts**: Utilities for hyperparameter tuning can be found in the `utils` directory.
 
+![Pipeline Diagram](docs/workflow.svg)
+
 ## Abstract
 Three-dimensional (3D) printing offers a promising approach to creating personalised medicines. However, traditional trial-and-error methods are costly and require significant expertise, posing challenges for tailoring treatments to individual patients. 
 
@@ -19,10 +21,4 @@ To address these challenges, we developed a novel pipeline for formulation desig
 - **High Success Rate**: 80% of generated drug formulations were successfully printed, with 92% accuracy in predicting printing parameters.
 - **Efficiency**: Development and printing time for new drug formulations was reduced from approximately one week to a single day.
 
-![Pipeline Diagram](docs/workflow.svg)
 
-## Adaptability
-The pipeline is not limited to SLS printing but can also be adapted for optimising other 3D printing technologies or formulation platforms.
-
----
-This work showcases the first fully automated, end-to-end 3D printing drug formulation pipeline, representing a significant step forward in personalised medicine development.

@@ -19,6 +19,8 @@ To address these challenges, we developed a novel pipeline for formulation desig
 - **High Success Rate**: 80% of generated drug formulations were successfully printed, with 92% accuracy in predicting printing parameters.
 - **Efficiency**: Development and printing time for new drug formulations was reduced from approximately one week to a single day.
 
+![Pipeline Diagram](docs/workflow.svg)
+
 ## Adaptability
 The pipeline is not limited to SLS printing but can also be adapted for optimising other 3D printing technologies or formulation platforms.
 

@@ -20,8 +20,6 @@ from tqdm import tqdm
 from src.recommenders.ensemble_mlp import Ensemble, EnsembleMLP
 from src.recommenders.proportion.utils import binary_entropy
 
-good_materials = [58, 61, 63, 85, 88, 94, 95, 107]
-
 
 class ProportionRecommenderRS:
     """Random Search optimiser for discovering improved material proportions.

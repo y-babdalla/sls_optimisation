@@ -226,30 +226,27 @@ if __name__ == "__main__":
     ]
 
     # Try different lambda values and record results
-    l_values = [1, 0.1, 0.01]
-    for l_val in l_values:
-        csv_filename = (
-            f"{os.path.dirname(os.path.realpath(__file__))}"
-            f"/../../recommenders/proportion/results_rs_{l_val}.csv"
-        )
-        with open(csv_filename, "a", newline="") as csvfile:
-            writer = csv.writer(csvfile)
-            if csvfile.tell() == 0:
-                writer.writerow(["initial point", "initial value", "new print", "new value"])
+    csv_filename = (
+        f"{os.path.dirname(os.path.realpath(__file__))}"
+        f"/../../recommenders/proportion/results_rs_{l_val}.csv"
+    )
+    with open(csv_filename, "a", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        if csvfile.tell() == 0:
+            writer.writerow(["initial point", "initial value", "new print", "new value"])
 
-            for fail in tqdm(fails):
-                init_val = model.predict_proba(np.expand_dims(fail, axis=0))
-                optimiser_rs = ProportionRecommenderRS(
-                    objective_function=objective_function,
-                    initial_x=fail,
-                    eta=0.03,
-                    num_iterations=3000,
-                    num_materials=6,
-                    lambda_value=l_val,
-                )
+        for fail in tqdm(fails):
+            init_val = model.predict_proba(np.expand_dims(fail, axis=0))
+            optimiser_rs = ProportionRecommenderRS(
+                objective_function=objective_function,
+                initial_x=fail,
+                eta=0.03,
+                num_iterations=3000,
+                num_materials=6,
+            )
 
-                best_params, history = optimiser_rs.optimise()
-                new_print = best_params["best_x"]
-                new_val = model.predict_proba(new_print.unsqueeze(0))
+            best_params, history = optimiser_rs.optimise()
+            new_print = best_params["best_x"]
+            new_val = model.predict_proba(new_print.unsqueeze(0))
 
-                writer.writerow([fail, init_val, new_print, new_val])
+            writer.writerow([fail, init_val, new_print, new_val])

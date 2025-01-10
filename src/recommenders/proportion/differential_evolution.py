@@ -254,33 +254,30 @@ if __name__ == "__main__":
     print("Best score:", model.predict_proba(best_params_de["best_x"]))
     print("Best fitness:", best_params_de["best_fitness"])
 
-    l_values = [1, 0.1, 0.01]
     failed_samples = [
         x_values[i]
         for i, pred_val in enumerate(fitted_values)
         if pred_val == 0 and y_values[i] == 0
     ]
 
-    for l_value in tqdm(l_values):
-        csv_filename = (
-            f"{os.path.dirname(os.path.realpath(__file__))}"
-            f"/../../recommenders/proportion/results_de_{l_value}.csv"
-        )
-        with open(csv_filename, "a", newline="") as csvfile:
-            writer = csv.writer(csvfile)
-            if csvfile.tell() == 0:
-                writer.writerow(["initial point", "initial value", "new print", "new value"])
+    csv_filename = (
+        f"{os.path.dirname(os.path.realpath(__file__))}"
+        f"/../../recommenders/proportion/results_de_{l_value}.csv"
+    )
+    with open(csv_filename, "a", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        if csvfile.tell() == 0:
+            writer.writerow(["initial point", "initial value", "new print", "new value"])
 
-            for failed_sample in tqdm(failed_samples):
-                initial_value = model.predict_proba(np.expand_dims(failed_sample, 0))
-                optimiser_de = ProportionRecommenderDE(
-                    objective_function=objective_function,
-                    initial_x=failed_sample,
-                    num_iterations=50,
-                    num_materials=6,
-                    lambda_value=l_value,
-                )
-                best_params_de, history_de = optimiser_de.optimise()
-                new_print = best_params_de["best_x"]
-                new_value = model.predict_proba(new_print)
-                writer.writerow([failed_sample, initial_value, new_print, new_value])
+        for failed_sample in tqdm(failed_samples):
+            initial_value = model.predict_proba(np.expand_dims(failed_sample, 0))
+            optimiser_de = ProportionRecommenderDE(
+                objective_function=objective_function,
+                initial_x=failed_sample,
+                num_iterations=50,
+                num_materials=6,
+            )
+            best_params_de, history_de = optimiser_de.optimise()
+            new_print = best_params_de["best_x"]
+            new_value = model.predict_proba(new_print)
+            writer.writerow([failed_sample, initial_value, new_print, new_value])

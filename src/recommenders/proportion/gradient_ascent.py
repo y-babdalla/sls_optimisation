@@ -1,6 +1,6 @@
-"""Main script for proportion recommender with gradient descent.
+"""Main script for proportion recommender with gradient ascent.
 
-This module defines a `ProportionRecommenderGD` class that employs gradient descent
+This module defines a `ProportionRecommenderGD` class that employs gradient ascent
 to optimise material proportions for improved 3D-printed medicine outcomes.
 It includes an example usage in the `if __name__ == "__main__":` block.
 """
@@ -20,13 +20,13 @@ from src.recommenders.ensemble_mlp import Ensemble, EnsembleMLP
 from src.recommenders.proportion.utils import binary_entropy
 
 
-class ProportionRecommenderGD:
-    """Use gradient descent to optimise material proportions in 3D-printed medicine.
+class ProportionRecommenderGA:
+    """Use gradient ascent to optimise material proportions in 3D-printed medicine.
 
     Args:
         objective_function (Callable): Function returning a torch.Tensor, used as the loss.
         initial_x (np.ndarray): Initial material proportions.
-        num_iterations (int): Number of gradient descent steps.
+        num_iterations (int): Number of gradient ascent steps.
         learning_rate (float): Learning rate for the optimiser.
         noise_sigma (float): Standard deviation of random noise added to gradients.
         num_materials (int): Number of materials to optimise.
@@ -54,7 +54,7 @@ class ProportionRecommenderGD:
     def optimise(
         self,
     ) -> tuple[dict[str, np.ndarray | float], dict[str, list[float | np.ndarray]]]:
-        """Run the gradient descent optimisation and return best results and history.
+        """Run the gradient ascent optimisation and return best results and history.
 
         Returns:
             (dict[str, np.ndarray | float], dict[str, list[float | np.ndarray]]):
@@ -186,33 +186,30 @@ if __name__ == "__main__":
         if pred_val == 0 and y_values[i] == 0
     ]
 
-    l_values = [1, 0.1, 0.01]
-    for l_val in tqdm(l_values):
-        csv_filename = (
-            f"{os.path.dirname(os.path.realpath(__file__))}"
-            f"/../../recommenders/proportion/gd_results_{l_val}.csv"
-        )
-        with open(csv_filename, "a", newline="") as csvfile:
-            writer = csv.writer(csvfile)
-            if csvfile.tell() == 0:
-                writer.writerow(["initial point", "initial value", "new print", "new value"])
+    csv_filename = (
+        f"{os.path.dirname(os.path.realpath(__file__))}"
+        f"/../../recommenders/proportion/gd_results_{l_val}.csv"
+    )
+    with open(csv_filename, "a", newline="") as csvfile:
+        writer = csv.writer(csvfile)
+        if csvfile.tell() == 0:
+            writer.writerow(["initial point", "initial value", "new print", "new value"])
 
-            for fail_sample in tqdm(fails):
-                init_x = fail_sample
-                init_val = model.predict_proba(np.expand_dims(fail_sample, axis=0))
+        for fail_sample in tqdm(fails):
+            init_x = fail_sample
+            init_val = model.predict_proba(np.expand_dims(fail_sample, axis=0))
 
-                optimiser = ProportionRecommenderGD(
-                    objective_function,
-                    init_x,
-                    learning_rate=0.03,
-                    num_iterations=4000,
-                    noise_sigma=0.001,
-                    num_materials=6,
-                    lambda_value=l_val,
-                )
-                best_params, history = optimiser.optimise()
+            optimiser = ProportionRecommenderGA(
+                objective_function,
+                init_x,
+                learning_rate=0.03,
+                num_iterations=4000,
+                noise_sigma=0.001,
+                num_materials=6,
+            )
+            best_params, history = optimiser.optimise()
 
-                new_print = best_params["best_x"]
-                new_val = model.predict_proba(np.expand_dims(new_print, axis=0))
+            new_print = best_params["best_x"]
+            new_val = model.predict_proba(np.expand_dims(new_print, axis=0))
 
-                writer.writerow([init_x, init_val, new_print, new_val])
+            writer.writerow([init_x, init_val, new_print, new_val])

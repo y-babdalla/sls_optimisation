@@ -1,4 +1,4 @@
-# Closing the Loop: An Automated End-to-End 3D Printing Pipeline for Personalised Drug Formulations  
+# A Novel Semi-Automated Pipeline for Optimising 3D-Printed Drug Formulations  
 **Authors**:  
 Youssef Abdalla, Martin Ferianc, Haya Alfassam, Atheer Awad, Ruochen Qiao, Miguel Rodrigues, Mine Orlu, Abdul W. Basit, David Shorthouse  
 

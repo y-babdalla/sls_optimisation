@@ -1,4 +1,4 @@
-"""Main script for proportion recommender with gradient ascent.
+"""Main script for proportion recommender with gradient descent.
 
 This module defines a `ProportionRecommenderGD` class that employs gradient ascent
 to optimise material proportions for improved 3D-printed medicine outcomes.
@@ -20,8 +20,8 @@ from src.recommenders.ensemble_mlp import Ensemble, EnsembleMLP
 from src.recommenders.proportion.utils import binary_entropy
 
 
-class ProportionRecommenderGA:
-    """Use gradient ascent to optimise material proportions in 3D-printed medicine.
+class ProportionRecommenderGD:
+    """Use gradient descent to optimise material proportions in 3D-printed medicine.
 
     Args:
         objective_function (Callable): Function returning a torch.Tensor, used as the loss.
@@ -199,7 +199,7 @@ if __name__ == "__main__":
             init_x = fail_sample
             init_val = model.predict_proba(np.expand_dims(fail_sample, axis=0))
 
-            optimiser = ProportionRecommenderGA(
+            optimiser = ProportionRecommenderGD(
                 objective_function,
                 init_x,
                 learning_rate=0.03,

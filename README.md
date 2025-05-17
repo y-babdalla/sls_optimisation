@@ -12,6 +12,8 @@ Three-dimensional (3D) printing offers the potential to revolutionise personalis
 
 Please note that the data used to train the models is private, for access to the training and evaluation data please contact the authors.
 
+**Read article:** https://doi.org/10.1002/aisy.202401112
+
 ### Key Features
 - **Regressor**: Replaced with an Ensemble NN for enhanced predictive accuracy. The main script for the model can be found here: `src/recommenders/ensemble_mlp.py`
 - **Optimisation Algorithms**: All optimisers are available in the `src/recommenders/proportion` directory.
